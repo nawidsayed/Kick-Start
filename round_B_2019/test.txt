@@ -1,0 +1,25 @@
+3
+4
+20 10 1
+5 30 5
+100 30 1
+5 80 60
+3
+10 4 1000
+10 3 1000
+10 8 1000
+3
+12 300 50
+5 200 0
+5 200 0
+
+query |  group | value
+------|--------|
+num hems | LBX |123472390478
+
+spark-submit --deploy-mode client --class com.truthset.e2e.jobs.DataFactsReduxJob --conf spark.executor.extraJavaOptions=-XX:+UseG1GC --conf spark.driver.extraJavaOptions=-XX:+UseG1GC "--driver-java-options=-DSCORED_CLASSES_INPUT_PATH=/Users/nawidsayed/spark-data/equivalence-classes -DASSERTIONS_PER_HEM_INPUT_PATH=/Users/nawidsayed/spark-data/provider-assertions-per-hem -DFACTS_OUTPUT_PATH=/Users/nawidsayed/spark-data/test_output -DLOCAL=true -DCACHE_PATH=/Users/nawidsayed/spark-data/data-cache" /Users/nawidsayed/Documents/GitHub/truthset/target/scala-2.11/truthset-assembly-1.0.0.jar
+
+--conf spark.driver.memory=30g --conf spark.driver.cores=6 --conf spark.driver.maxResultSize=0 --conf spark.dynamicAllocation.maxExecutors=200 --conf spark.yarn.executor.memoryOverhead=5000 --conf spark.executor.memory=20g 
+
+
+spark-submit --deploy-mode client --class com.truthset.e2e.jobs.DataFactsReduxJob --conf spark.executor.extraJavaOptions=-XX:+UseG1GC --conf spark.driver.extraJavaOptions=-XX:+UseG1GC "--driver-java-options=-DSCORED_CLASSES_INPUT_PATH=s3://truthset-dev/ted/2020-05-11/e2e-output/equivalence-classes -DASSERTIONS_PER_HEM_INPUT_PATH=s3://truthset-dev/ted/2020-05-11/e2e-output/provider-assertions-per-hem -DFACTS_OUTPUT_PATH=s3://truthset-dev/nawid/facts -DLOCAL=false -DCACHE_PATH=hdfs:///truthset-cache" s3://truthset-dev/nawid/jars/truthset-assembly-1.0.0.jar
