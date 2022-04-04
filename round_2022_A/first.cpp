@@ -74,29 +74,7 @@ template<class TH, class... TA> void _dbg(const char *sdbg, TH h, TA... a) {
 
 
 long solve(long t){
-    long N, K;
-    cin >> N >> K;
-    vl vec(N);
-    FOR(n,0,N) cin >> vec[n];
-    
-    long total = 0;
-    long e = K;
-    FOR(n,0,N){
-        if (vec[n] != e){
-            e = K;
-        }
-
-        if (vec[n] == e) {
-            e--;
-            if(e == 0){
-                total++;
-                e = K;
-            }
-        }
-    }
-
-
-    cout << "Case #" << t+1 << ": " << total << endl;
+    cout << "Case #" << t+1 << ": " << -1 << endl;
     return 0;
 }
 
