@@ -74,25 +74,34 @@ template<class TH, class... TA> void _dbg(const char *sdbg, TH h, TA... a) {
 
 
 long solve(long t){
-    string s,p;
-    cin >> s >> p;
-    long ns = s.size();
-    long np = p.size();
-    long j = 0;
-    FOR(i,0,np) {
-        if(p[i] == s[j]) j++;
-        if(j == ns) {
-            cout << "Case #" << t+1 << ": " << np - ns << endl;
-            return 0;        
-        } 
+    string s;
+    cin >> s;
+    long N = s.size();
+    vl v(N);
+    FOR(i,0,N) v[i] = s[i] - '0';
+    long sum = 0;
+    FOR(i,0,N) sum += v[i];
+    long r = (9+(-sum)%9) % 9;
+    if (r == 0) {
+        string p = s.substr(0,1) + "0" + s.substr(1,N-1);
+        cout << "Case #" << t+1 << ": " << p << endl;
+        return 0;
     }
-    if(j == ns) {
-        cout << "Case #" << t+1 << ": " << np - ns << endl;
-        return 0;        
-    } 
 
-    cout << "Case #" << t+1 << ": " << "IMPOSSIBLE" << endl;
+    FOR(i,0,N) {
+        if (r < v[i]) {
+            string p = s.substr(0,i) + to_string(r) + s.substr(i,N-i);
+            cout << "Case #" << t+1 << ": " << p << endl;
+            return 0;
+        }
+    }
+    string p = s + to_string(r);
+    cout << "Case #" << t+1 << ": " << p << endl;
     return 0;
+
+
+
+
 }
 
 

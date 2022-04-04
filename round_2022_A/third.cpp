@@ -73,25 +73,103 @@ template<class TH, class... TA> void _dbg(const char *sdbg, TH h, TA... a) {
 // print(...) macro can slow down the program
 
 
-long solve(long t){
-    string s,p;
-    cin >> s >> p;
-    long ns = s.size();
-    long np = p.size();
-    long j = 0;
-    FOR(i,0,np) {
-        if(p[i] == s[j]) j++;
-        if(j == ns) {
-            cout << "Case #" << t+1 << ": " << np - ns << endl;
-            return 0;        
-        } 
+bool is_pal(string v) {
+    if (v.size() != 6) {
+        print(v)
+        throw 1;}
+    bool pal = true;
+    // Check 6 pals
+    FOR(i,0,3) {
+        if (v[i] != v[5-i]) pal = false;
     }
-    if(j == ns) {
-        cout << "Case #" << t+1 << ": " << np - ns << endl;
-        return 0;        
-    } 
+    if (pal) return true;
+    pal = true;
+    // Check 5 pals
+    FOR(i,0,2) {
+        if (v[i+1] != v[5-i]) return false;
+    }
+    return true;
+}
 
-    cout << "Case #" << t+1 << ": " << "IMPOSSIBLE" << endl;
+long solve(long t){
+    string s;
+    long N;
+    cin >> N;
+    cin >> s;
+    if (N < 5) {
+        cout << "Case #" << t+1 << ": " << "POSSIBLE" << endl;
+        return 0;
+    }
+    if (N < 6) {
+        set<string> cur = {"0", "1"};
+        FOR(i,0,N) {
+            set<string> next;
+            for (string x: cur) {
+                if(s[i] == '?') {
+                    next.insert(x+"0");
+                    next.insert(x+"1");
+                } else {
+                    x.push_back(s[i]);
+                    next.insert(x);
+                }
+            }
+            cur = next;
+        }
+        for(string x: cur) if (!is_pal(x)) {
+            cout << "Case #" << t+1 << ": " << "POSSIBLE" << endl;
+            return 0;            
+        }
+        cout << "Case #" << t+1 << ": " << "IMPOSSIBLE" << endl;
+        return 0;     
+    }
+
+    set<string> cur = {"0", "1"};
+    set<string> next;
+    FOR(i,0,5) {
+        next.clear();
+        for (string x: cur) {
+            if(s[i] == '?') {
+                next.insert(x+"0");
+                next.insert(x+"1");
+            } else {
+                x.push_back(s[i]);
+                next.insert(x);
+            }
+        }
+        cur = next;
+    }
+    next.clear();
+    for (string x: cur) if (!is_pal(x)) next.insert(x);
+    cur = next;
+    if (cur.size() == 0) {
+        cout << "Case #" << t+1 << ": " << "IMPOSSIBLE" << endl;
+        return 0;             
+    }
+
+
+    FOR(i,5,N) {
+        next.clear();
+        for (string x: cur) {
+            if(s[i] == '?') {
+                next.insert(x.substr(1,5)+"0");
+                next.insert(x.substr(1,5)+"1");
+            } else {
+                x.push_back(s[i]);
+                next.insert(x.substr(1,6));
+            }
+        }
+        cur = next;
+        next.clear();
+        for (string x: cur) if (!is_pal(x)) next.insert(x);
+        cur = next;
+        if (cur.size() == 0) {
+            cout << "Case #" << t+1 << ": " << "IMPOSSIBLE" << endl;
+        return 0;             
+        }
+    }
+
+
+    cout << "Case #" << t+1 << ": " << "POSSIBLE" << endl;
     return 0;
 }
 
